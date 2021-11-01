@@ -31,13 +31,29 @@ public class SubscriptionController {
         }
 
         if(subscriptions == null){
-            //подписки нет
+            model.addAttribute("toPayUrl", "http://localhost:8085/pay/" + userId + "/");
+
+            addModelAttributes(model, userId);
+
             return "subBuy";
         }else {
             model.addAttribute("startTime", new Date(subscriptions.getStartTime()));
             model.addAttribute("endTime", new Date(subscriptions.getEndTime()));
             model.addAttribute("autoPay", subscriptions.getAutoPay());
+
+            addModelAttributes(model, userId);
+
             return "subInfo";
         }
+    }
+
+    private Model addModelAttributes(Model model, Long userId){
+        model.addAttribute("toAuthorisation", "http://localhost:8081/authorisation/");
+        model.addAttribute("toProfile", "http://localhost:8082/profile/" + userId + "/");
+        model.addAttribute("toCatalog", "http://localhost:8083/catalog/" + userId + "/");
+        model.addAttribute("toSubscription", "http://localhost:8084/subscription/" + userId + "/");
+        model.addAttribute("toPay", "http://localhost:8085/pay/" + userId + "/");
+        model.addAttribute("toPenalties", "http://localhost:8086/penalties/" + userId + "/");
+        return model;
     }
 }
